@@ -1,8 +1,1469 @@
-﻿<Application
-    x:Class="InkToolbarRevealStyleRepo.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:InkToolbarRevealStyleRepo"
-    RequestedTheme="Light">
+﻿<Application x:Class="InkToolbarRevealStyleRepo.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             RequestedTheme="Light">
 
+    <Application.Resources>
+        <Style x:Key="InkToolbarCommonButtonStyle"
+               TargetType="ToggleButton">
+            <Setter Property="MinWidth"
+                    Value="{ThemeResource InkToolbarButtonWidth}" />
+            <Setter Property="MinHeight"
+                    Value="{ThemeResource InkToolbarButtonHeight}" />
+            <Setter Property="MaxWidth"
+                    Value="{ThemeResource InkToolbarButtonWidth}" />
+            <Setter Property="MaxHeight"
+                    Value="{ThemeResource InkToolbarButtonHeight}" />
+            <Setter Property="BorderThickness"
+                    Value="{ThemeResource ButtonRevealBorderThemeThickness}" />
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Foreground"
+                    Value="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+            <Setter Property="BorderBrush"
+                    Value="{ThemeResource ButtonRevealBorderBrush}"/>
+            <Setter Property="FocusVisualMargin"
+                    Value="-3" />
+        </Style>
+
+        <Style TargetType="InkToolbarBallpointPenButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="AutomationProperties.AutomationId"
+                    Value="InkToolbarBallpointPenButton" />
+            <Setter Property="MinStrokeWidth"
+                    Value="1" />
+            <Setter Property="MaxStrokeWidth"
+                    Value="24" />
+            <Setter Property="SelectedStrokeWidth"
+                    Value="4" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="SelectedBrushIndex"
+                    Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarBallpointPenButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="Content.Opacity"
+                                                    Value="0" />
+                                            <Setter Target="CheckedContent.Opacity"
+                                                    Value="1" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentTransform.ScaleX"
+                                                    Value="-1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw" />
+                            <Grid RenderTransformOrigin="0.5, 0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="ContentTransform" />
+                                </Grid.RenderTransform>
+                                <TextBlock x:Name="Content"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xE76D;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+                                <TextBlock x:Name="CheckedContent"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xE76D;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonSelectedForegroundThemeBrush}"
+                                           Opacity="0" />
+                                <TextBlock x:Name="ContentFillGlyph"
+                                           Text="&#xE88F;"
+                                           Style="{StaticResource InkToolbarGlyphFillFontStyle}"
+                                           TextAlignment="Center"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Opacity="1"
+                                           Canvas.ZIndex="0"
+                                           Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush, Mode=OneWay}" />
+                            </Grid>
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--
+        The AttachedFlyout must be created from code behind, otherwise XAML will create *one* flyout for this style and
+        apply to all instances of this kind of InkToolbar button, which means all instances of this kind of InkToolbar
+        button share the same flyout.
+        Similarly, the Palette property also need to be created from code behind to avoid sharing.
+    -->
+        </Style>
+
+        <Style TargetType="InkToolbarHighlighterButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="AutomationProperties.AutomationId"
+                    Value="InkToolbarHighlighterButton" />
+            <Setter Property="MinStrokeWidth"
+                    Value="12" />
+            <Setter Property="MaxStrokeWidth"
+                    Value="64" />
+            <Setter Property="SelectedStrokeWidth"
+                    Value="36" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="SelectedBrushIndex"
+                    Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarHighlighterButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="Content.Opacity"
+                                                    Value="0" />
+                                            <Setter Target="CheckedContent.Opacity"
+                                                    Value="1" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentTransform.ScaleX"
+                                                    Value="-1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw" />
+                            <Grid RenderTransformOrigin="0.5, 0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="ContentTransform" />
+                                </Grid.RenderTransform>
+                                <TextBlock x:Name="Content"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xE193;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+                                <TextBlock x:Name="CheckedContent"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xE193;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonSelectedForegroundThemeBrush}"
+                                           Opacity="0" />
+                                <TextBlock x:Name="ContentFillGlyph"
+                                           Text="&#xE891;"
+                                           Style="{StaticResource InkToolbarGlyphFillFontStyle}"
+                                           TextAlignment="Center"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Opacity="1"
+                                           Canvas.ZIndex="0"
+                                           Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush, Mode=OneWay}" />
+                            </Grid>
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--
+        The AttachedFlyout must be created from code behind, otherwise XAML will create *one* flyout for this style and
+        apply to all instances of this kind of InkToolbar button, which means all instances of this kind of InkToolbar
+        button share the same flyout.
+        Similarly, the Palette property also need to be created from code behind to avoid sharing.
+    -->
+        </Style>
+        <Style TargetType="InkToolbarPencilButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="AutomationProperties.AutomationId"
+                    Value="InkToolbarPencilButton" />
+            <Setter Property="MinStrokeWidth"
+                    Value="1" />
+            <Setter Property="MaxStrokeWidth"
+                    Value="24" />
+            <Setter Property="SelectedStrokeWidth"
+                    Value="4" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="SelectedBrushIndex"
+                    Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarPencilButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="Content.Opacity"
+                                                    Value="0" />
+                                            <Setter Target="CheckedContent.Opacity"
+                                                    Value="1" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentTransform.ScaleX"
+                                                    Value="-1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw" />
+                            <Grid RenderTransformOrigin="0.5, 0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="ContentTransform" />
+                                </Grid.RenderTransform>
+                                <TextBlock x:Name="Content"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xED63;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+                                <TextBlock x:Name="CheckedContent"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xED63;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Canvas.ZIndex="1"
+                                           Foreground="{ThemeResource InkToolbarButtonSelectedForegroundThemeBrush}"
+                                           Opacity="0" />
+                                <TextBlock x:Name="ContentFillGlyph"
+                                           Text="&#xF0C6;"
+                                           Style="{StaticResource InkToolbarGlyphFillFontStyle}"
+                                           TextAlignment="Center"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Opacity="1"
+                                           Canvas.ZIndex="0"
+                                           Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush, Mode=OneWay}" />
+                            </Grid>
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--
+        The AttachedFlyout must be created from code behind, otherwise XAML will create *one* flyout for this style and
+        apply to all instances of this kind of InkToolbar button, which means all instances of this kind of InkToolbar
+        button share the same flyout.
+        Similarly, the Palette property also need to be created from code behind to avoid sharing.
+    -->
+        </Style>
+        <Style TargetType="InkToolbarCustomPenButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="MinStrokeWidth"
+                    Value="1" />
+            <Setter Property="MaxStrokeWidth"
+                    Value="10" />
+            <Setter Property="SelectedStrokeWidth"
+                    Value="5" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="SelectedBrushIndex"
+                    Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarCustomPenButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw" />
+                            <ContentPresenter x:Name="Content"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              HighContrastAdjustment="None" />
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--
+        The AttachedFlyout must be created from code behind, otherwise XAML will create *one* flyout for this style and
+        apply to all instances of this kind of InkToolbar button, which means all instances of this kind of InkToolbar
+        button share the same flyout.
+        Similarly, the Palette property also need to be created from code behind to avoid sharing.
+    -->
+        </Style>
+
+        <Style TargetType="InkToolbarEraserButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="AutomationProperties.AutomationId"
+                    Value="InkToolbarEraserButton" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarEraserButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="Content.Opacity"
+                                                    Value="0" />
+                                            <Setter Target="CheckedContent.Opacity"
+                                                    Value="1" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentTransform.ScaleX"
+                                                    Value="-1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw"
+                                       Margin="0,0,0,6"
+                                       HorizontalAlignment="Center" />
+                            <Grid RenderTransformOrigin="0.5, 0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="ContentTransform" />
+                                </Grid.RenderTransform>
+                                <TextBlock x:Name="Content"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xED60;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Foreground="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+                                <TextBlock x:Name="CheckedContent"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text="&#xED60;"
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Foreground="{ThemeResource InkToolbarButtonSelectedForegroundThemeBrush}"
+                                           Opacity="0" />
+                            </Grid>
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--
+        The AttachedFlyout must be created from code behind, otherwise XAML will create *one* flyout for this style and
+        apply to all instances of this kind of InkToolbar button, which means all instances of this kind of InkToolbar
+        button share the same flyout.
+        Similarly, the Palette property also need to be created from code behind to avoid sharing.
+    -->
+        </Style>
+
+        <Style TargetType="InkToolbarStencilButton"
+               BasedOn="{StaticResource InkToolbarCommonButtonStyle}">
+            <Setter Property="AutomationProperties.AutomationId"
+                    Value="InkToolbarStencilButton" />
+            <Setter Property="UseSystemFocusVisuals"
+                    Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="InkToolbarStencilButton">
+                        <Grid x:Name="RootElement"
+                              Background="{TemplateBinding Background}"
+                              Width="{ThemeResource InkToolbarButtonWidth}"
+                              Height="{ThemeResource InkToolbarButtonHeight}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="PointerOver" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootElement.(RevealBrush.State)"
+                                                    Value="Pressed" />
+                                            <Setter Target="RootElement.Background"
+                                                    Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                            <Setter Target="RootElement.BorderBrush"
+                                                    Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarDisabledBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarDisabledForegroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                    <VisualState x:Name="Checked">
+                                        <VisualState.Setters>
+                                            <Setter Target="Content.Opacity"
+                                                    Value="0" />
+                                            <Setter Target="CheckedContent.Opacity"
+                                                    Value="1" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="CheckedPointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarButtonHoverBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="IndeterminatePointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentBackground.Fill"
+                                                    Value="{ThemeResource InkToolbarButtonHoverBackgroundThemeBrush}" />
+                                            <Setter Target="Content.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="CheckedContent.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="ExtensionGlyph.Foreground"
+                                                    Value="{ThemeResource InkToolbarButtonHoverForegroundThemeBrush}" />
+                                            <Setter Target="SelectionAccent.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused" />
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="PointerFocused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="GlyphVisualStates">
+                                    <VisualState x:Name="ShowExtensionGlyph">
+                                        <VisualState.Setters>
+                                            <Setter Target="ExtensionGlyph.Opacity"
+                                                    Value="1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="HideExtensionGlyph" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlowDirectionStates">
+                                    <VisualState x:Name="LeftToRight" />
+                                    <VisualState x:Name="RightToLeft">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentTransform.ScaleX"
+                                                    Value="-1" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ButtonFlyoutDirectionStates">
+                                    <VisualState x:Name="BottomDirection" />
+                                    <VisualState x:Name="TopDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Bottom" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Top" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,4,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE96D;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirection">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="RightDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Right" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="0,0,4,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26C;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftDirectionRTL">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionAccent.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="SelectionAccent.VerticalAlignment"
+                                                    Value="Stretch" />
+                                            <Setter Target="SelectionAccent.Height"
+                                                    Value="auto" />
+                                            <Setter Target="SelectionAccent.Width"
+                                                    Value="2" />
+                                            <Setter Target="ExtensionGlyph.HorizontalAlignment"
+                                                    Value="Left" />
+                                            <Setter Target="ExtensionGlyph.VerticalAlignment"
+                                                    Value="Center" />
+                                            <Setter Target="ExtensionGlyph.Margin"
+                                                    Value="4,0,0,0" />
+                                            <Setter Target="ExtensionGlyph.Text"
+                                                    Value="&#xE26B;" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <Rectangle x:Name="ContentBackground"
+                                       Fill="Transparent" />
+                            <TextBlock x:Name="ExtensionGlyph"
+                                       Style="{StaticResource InkToolbarExtensionGlyphStyle}"
+                                       AutomationProperties.AccessibilityView="Raw"
+                                       Margin="0,0,0,6"
+                                       HorizontalAlignment="Center" />
+                            <Grid RenderTransformOrigin="0.5, 0.5">
+                                <Grid.RenderTransform>
+                                    <ScaleTransform x:Name="ContentTransform" />
+                                </Grid.RenderTransform>
+                                <TextBlock x:Name="Content"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text=""
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Foreground="{ThemeResource InkToolbarButtonForegroundThemeBrush}" />
+                                <TextBlock x:Name="CheckedContent"
+                                           Style="{StaticResource InkToolbarGlyphFontStyle}"
+                                           Text=""
+                                           AutomationProperties.AccessibilityView="Raw"
+                                           Foreground="{ThemeResource InkToolbarButtonSelectedForegroundThemeBrush}"
+                                           Opacity="0" />
+                            </Grid>
+                            <Rectangle x:Name="SelectionAccent"
+                                       Style="{StaticResource InkToolbarSelectionAccentStyle}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
 </Application>
